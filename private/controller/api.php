@@ -1,5 +1,9 @@
 <?php
 class Api extends Controller{
+
+    function __construct(){
+        header('Content-Type: application/json');
+    }
     
     function default(){
         // khởi tạo đối tượng tèo sử dụng được những hàm từ đối tượng sinhvienmodel
@@ -8,58 +12,8 @@ class Api extends Controller{
         echo json_encode('quan dep trai');
     }
 
+    
     function login(){
-        if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
-            echo json_encode([
-                'status' => false,
-                'msg' => 'Method not allowed'
-            ]);
-            exit();
-        }else{
-            if(isset($_POST['btnLoginSubmit'])){
-                if(!isset($_POST['email']) || empty($_POST['email'])){
-                    echo json_encode([
-                        'status' => false,
-                        'msg' => 'Email is Required!'
-                    ]);
-                }else if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-                    echo json_encode([
-                        'status' => false,
-                        'msg' => 'Invalid Format!'
-                    ]);
-                }else if(!isset($_POST['password']) || empty($_POST['password'])){
-                    echo json_encode([
-                        'status' => false,
-                        'msg' => 'Password is required'
-                    ]);
-                }else{
-                    $password = $_POST['password'];
-                    $email = $_POST['email'];
-                    if($this->model('Account')->is_email_exit($email)){
-                        if($this->model('Account')->login($email,$password)){
-                            echo json_encode([
-                                'status' => true,
-                                'msg' => 'Login successfully!'
-                            ]);
-
-                        }else{
-                            echo json_encode([
-                                'status' => false,
-                                'msg' => 'Invalid Password!'
-                            ]);
-                        }
-                    }else{
-                        echo json_encode([
-                            'status' => false,
-                            'msg' => 'Account is not exits!'
-                        ]);
-                    }
-                }    
-            }
-           
-        }
-    }
-    function login1(){
         if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
             echo json_encode([
                 'status' => false,
@@ -118,14 +72,59 @@ class Api extends Controller{
             ]);
             exit();
         }else{
-            if(!isset($_POST['phone_number']) || empty($_POST['phone_number'])){
+            if(!isset($_POST['phoneNumber']) || empty($_POST['phoneNumber'])){
                 echo json_encode([
                     'status' => false,
                     'msg' => 'Phone number is required'
-                ])
-            }elseif(!isset($_POST['full_name']) || empty($_POST['full_name'])){
+                ]);
+            }else if(!isset($_POST['fullName']) || empty($_POST['fullName'])){
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Full name is required'
+                ]);
+            }else if(!isset($_POST['address']) || empty($_POST['address'])){
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Address is required'
+                ]);
+            } else if(!isset($_POST['date']) || empty($_POST['date'])){
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Date is required'
+                ]);
+            }else if(!isset($_FILES['idCard1']) || $_FILES['idCard1']['size'] === 0){
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Id card image is required'
+                ]);
+            }else if(!isset($_FILES['idCard2']) ||  $_FILES['idCard2']['size'] === 0){
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Id card image is required'
+                ]);
+            }else{
+                $phoneNumber = $_POST['phoneNumber'];
+                $email = $_POST['email'];
+                $fullName = $_POST['fullName'];
+                $address = $_POST['address'];
+                $validDate = $this->utils()->checkTimeStamp($_POST['date']);
+                if ( !$validDate) {
+                    echo json_encode([
+                        'status' => false,
+                        'msg' => 'Date is not allow'
+                    ]);
+                } else {
+                    $date = $_POST['date'];
+                    print_r($_FILES['idCard1']); 
+                    $validImage = $this->utils()->checkValidImage($_FILES['idCard1']) && $this->utils()->checkValidImage($_FILES['idCard2']);
+                    if($validImage) {
+                        echo "dung vai lz";
+                    }else{
+                        echo 'sai';
+                    }
+                }
 
-            }
+            }     
         }
     }
 }
