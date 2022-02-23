@@ -12,21 +12,37 @@ class Account extends DB{
             return false;
         }
     }
-    public function is_phone_number_exit($phone_number){
-        $sql = "SELECT * FROM account WHERE phone_number = '$phone_number'";
-        $rows = mysqli_query($this->conn,$sql);
-        if(mysqli_num_rows($rows)>0){
+    public function is_phone_number_exit($phoneNumber){
+        $sql = "SELECT * FROM account WHERE phoneNumber = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows -> bind_param('s',$phoneNumber);
+        $rows->execute();
+        $result = $rows->fetch();
+        if($result>0){
             return true;
         }else{
             return false;
         }
     }
-    public function login($phone_number,$password){
-        $sql = "SELECT * FROM account WHERE phone_number = '$phone_number'";
-        $rows = mysqli_query($this->conn,$sql);
-        $data = $rows->fetch_assoc();
-        if($password===$data['password']){
+    public function login($phoneNumber,$password){
+        $sql = "SELECT * FROM account WHERE phoneNumber = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows -> bind_param('s',$phoneNumber);
+        $rows->execute();
+        $result = $rows->fetch();
+        if($password===$result['password']){
             $_SESSION['authenticated'] = true;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function add_Account($email,$phoneNumber,$fullName,$date,$address,$idCard1,$idCard2,$password){
+        $sql = "INSERT INTO account VALUES (?,?,?,?,?,?,?,?)";
+        $rows = $this->conn->prepare($sql);
+        $row -> bind_param('ssssssss',$email,$phoneNumber,$fullName,$date,$address,$idCard1,$idCard2,$password);
+        $row->execute();
+        if(mysqli_stmt_affected_rows($rows)){
             return true;
         }else{
             return false;

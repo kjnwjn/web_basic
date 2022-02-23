@@ -17,28 +17,28 @@ class Api extends Controller{
         if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
             echo json_encode([
                 'status' => false,
-                'msg' => 'Method not allowed'
+                'msg' => 'Method not allowed!'
             ]);
             exit();
         }else{
-            if(!isset($_POST['username']) || empty($_POST['username'])){
+            if(!isset($_POST['username']) || empty(trim($_POST['username']))){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'username is Required!'
+                    'msg' => 'Username is required!'
                 ]);
-            }else if(!isset($_POST['password']) || empty($_POST['password'])){
+            }else if(!isset($_POST['password']) || empty(trim($_POST['password']))){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Password is required'
+                    'msg' => 'Password is required!'
                 ]);
             }else if(strlen($_POST['password'])!=6){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Password must be 6 characters'
+                    'msg' => 'Password must be 6 characters!'
                 ]);
             }else{
-                $password = $_POST['password'];
-                $username = $_POST['username'];
+                $password = trim($_POST['password']);
+                $username = trim($_POST['username']);
                 if($this->model('Account')->is_phone_number_exit($username)){
                     if($this->model('Account')->login($username,$password)){
                         echo json_encode([
@@ -68,59 +68,107 @@ class Api extends Controller{
         if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
             echo json_encode([
                 'status' => false,
-                'msg' => 'Method not allowed'
+                'msg' => 'Method not allowed!'
             ]);
             exit();
         }else{
-            if(!isset($_POST['phoneNumber']) || empty($_POST['phoneNumber'])){
+            if(!isset($_POST['email']) || empty(trim($_POST['email']))){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Phone number is required'
+                    'msg' => 'Email is required!'
                 ]);
-            }else if(!isset($_POST['fullName']) || empty($_POST['fullName'])){
+            }else if(!isset($_POST['phoneNumber']) || empty(trim($_POST['phoneNumber']))){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Full name is required'
+                    'msg' => 'Phone number is required!'
                 ]);
-            }else if(!isset($_POST['address']) || empty($_POST['address'])){
+            }else if(!isset($_POST['fullName']) || empty(trim($_POST['fullName']))){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Address is required'
+                    'msg' => 'Full name is required!'
                 ]);
-            } else if(!isset($_POST['date']) || empty($_POST['date'])){
+            }else if(!isset($_POST['address']) || empty(trim($_POST['address']))){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Date is required'
+                    'msg' => 'Address is required!'
+                ]);
+            } else if(!isset($_POST['date']) || empty(trim($_POST['date']))){
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Date is required!'
                 ]);
             }else if(!isset($_FILES['idCard1']) || $_FILES['idCard1']['size'] === 0){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Id card image is required'
+                    'msg' => 'Id card image is required!'
                 ]);
             }else if(!isset($_FILES['idCard2']) ||  $_FILES['idCard2']['size'] === 0){
                 echo json_encode([
                     'status' => false,
-                    'msg' => 'Id card image is required'
+                    'msg' => 'Id card image is required!'
                 ]);
             }else{
-                $phoneNumber = $_POST['phoneNumber'];
-                $email = $_POST['email'];
-                $fullName = $_POST['fullName'];
                 $address = $_POST['address'];
-                $validDate = $this->utils()->checkTimeStamp($_POST['date']);
-                if ( !$validDate) {
+                if(!$this->utils()->checkPhoneNumber($_POST['phoneNumber'])){
                     echo json_encode([
                         'status' => false,
-                        'msg' => 'Date is not allow'
+                        'msg' => 'Invalid phone format!'
                     ]);
-                } else {
-                    $date = $_POST['date'];
-                    print_r($_FILES['idCard1']); 
-                    $validImage = $this->utils()->checkValidImage($_FILES['idCard1']) && $this->utils()->checkValidImage($_FILES['idCard2']);
-                    if($validImage) {
-                        echo "dung vai lz";
+                }else{
+                    if(!$this->utils()->checkEmail($_POST['email'])){
+                        echo json_encode([
+                            'status' => false,
+                            'msg' => 'Invalid email format!'
+                        ]);
                     }else{
-                        echo 'sai';
+                        if(!$this->utils()->checkName($_POST['fullName'])){
+                            echo json_encode([
+                                'status' => false,
+                                'msg' => 'Only letters and white space allowed!'
+                            ]);
+                        }else{
+                            $fullName = $_POST['fullName']; 
+                            $validDate = $this->utils()->checkTimeStamp($_POST['date']);
+                            // check ngay dung
+                            if (!$validDate) {
+                                echo json_encode([
+                                    'status' => false,
+                                    'msg' => 'Date is not allow!'
+                                ]);
+                            } else {
+                                $date = $_POST['date'];
+                                // echo date('m/d/Y',$_POST['date']);
+                                // print_r($_FILES['idCard1']); 
+                                $validImage = $this->utils()->checkValidImage($_FILES['idCard1']) && $this->utils()->checkValidImage($_FILES['idCard2']);
+                                if(!$validImage) {
+                                    echo json_encode([
+                                        'status' => false,
+                                        'msg' => 'Image is not allow!'
+                                    ]);
+                                }else{
+                                    // print_r($_FILES['idCard1']);
+                                    if($this->model('Account')->is_phone_number_exit($_POST['phoneNumber'])){
+                                        echo json_encode([
+                                            'status' => false,
+                                            'msg' => 'Phone number was used by another account!'
+                                        ]);
+                                    }else{
+                                        $phoneNumber = $_POST['phoneNumber'];
+                                        if($this->model('Account')->is_email_exit($_POST['email'])){
+                                            echo json_encode([
+                                                'status' => false,
+                                                'msg' => 'Email was used by another account!'
+                                            ]);
+                                        }else{
+                                            $email = $_POST['email'];  
+                                            $password = password_hash($this->utils()->generateRandomString(),PASSWORD_DEFAULT);
+                                            // echo $this->model('Account')->add_Account($email,$phoneNumber,$fullName,$date,$address,$idCard1,$idCard2,$password);
+                                        }
+                                    }
+                                    
+                                }
+                            }
+                        }
                     }
                 }
 
