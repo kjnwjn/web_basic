@@ -4,7 +4,7 @@ class DB{
     private $host = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $dbname = 'qad_app';
+    private $dbname = 'kiwi_app';
     
     function __construct(){
         $this->conn = mysqli_connect($this->host, $this->username, $this->password, $this->dbname);
