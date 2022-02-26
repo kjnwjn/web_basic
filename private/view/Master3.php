@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +11,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
+
 <body>
     <form>
         <div class="container">
-            <form >
+            <form>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Username</label>
                     <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Enter username">
@@ -23,13 +25,11 @@
                     <label for="exampleInputPassword1">Password</label>
                     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">date</label>
-                    <input type="date" class="form-control" name = "date" placeholder="Date" >
-                </div>
+
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </form>
 </body>
-</html> 
+
+</html>

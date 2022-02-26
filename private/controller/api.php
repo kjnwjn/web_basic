@@ -146,7 +146,8 @@ class Api extends Controller
                 // echo date('m/d/Y',$_POST['date']);
                 $phoneNumber = $_POST['phoneNumber'];
                 $email = $_POST['email'];
-                $password = password_hash($this->utils()->generateRandomString(), PASSWORD_DEFAULT);
+                $passwordDefault = $this->utils()->generateRandomString();
+                $password = password_hash($passwordDefault, PASSWORD_DEFAULT);
                 $imageValidate1 = $this->utils()->uploadImage($_FILES['idCard1']);
                 $imageValidate2 = $this->utils()->uploadImage($_FILES['idCard2']);
                 if (!$imageValidate1['status']) {
@@ -158,7 +159,7 @@ class Api extends Controller
                     $idCard2 = $imageValidate2['path'];
                     $result = $this->model('Account')->add_Account($email, $phoneNumber, $password, $fullName, $address, $date, $idCard1, $idCard2);
                     echo json_encode($result);
-                    $this->utils()->sendMail($phoneNumber, $password);
+                    $this->utils()->sendMail($phoneNumber, $passwordDefault);
                 };
             }
         }

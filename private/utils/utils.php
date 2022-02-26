@@ -96,7 +96,7 @@ class Util
         }
     }
 
-    public function sendMail()
+    public function sendMail($username, $password)
     {
 
         // Instantiation and passing `true` enables exceptions
@@ -123,9 +123,18 @@ class Util
             // $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); // Optional name
             // Content
             $mail->isHTML(true);   // Set email format to HTML
-            $mail->Subject = 'Here is the subject';
-            $mail->Body = 'This is the HTML message body <b>in bold!</b>';
-            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+            $mail->Subject = 'Here is your username and password for KiWi_APP';
+            $mail->Body = '<html>
+                                <body>
+                                    <h1>Account Details</h1>
+                                    <h2>Thank you for registering on our site, your account details are as follows:</h2>
+                            
+                                    <p>Username: ' . $username . '</p>
+                            
+                                    <p>Password: ' . $password . '</p>
+                                </body>
+                            </html>';
+            // $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
             $mail->send();
             echo 'Message has been sent';
         } catch (Exception $e) {

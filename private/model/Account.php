@@ -41,6 +41,23 @@ class Account extends DB
             return false;
         }
     }
+
+    public function checkActive($email)
+    {
+        $sql = "SELECT * FROM account WHERE email = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows->bind_param('s', $email);
+        $rows->execute();
+        $result = $rows->fetch();
+        if ($result['active'] === 0) {
+            return 0;
+        } else if ($result['active'] === 1) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
     public function add_Account($email, $phoneNumber, $password, $fullName, $address, $date, $idCard1, $idCard2)
     {
         $sql = "INSERT INTO account( email, phoneNumber, password, fullName, address, date, idCard1, idCard2) VALUES (?,?,?,?,?,?,?,?)";
@@ -52,6 +69,7 @@ class Account extends DB
                 return array(
                     "status" => true,
                     "response" => "Create Successfully!! Please check your email to get your username and password.",
+                    "redirect" => "../login"
                 );
             } else {
                 return array(
