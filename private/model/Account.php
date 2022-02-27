@@ -29,12 +29,12 @@ class Account extends DB
     }
     public function login($phoneNumber, $password)
     {
-        $sql = "SELECT * FROM account WHERE phoneNumber = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('s', $phoneNumber);
-        $rows->execute();
-        $result = $rows->fetch();
-        if ($password === $result['password']) {
+        $sql = "SELECT * FROM account WHERE phoneNumber = $phoneNumber";
+        $rows = $this->conn->query($sql);
+
+        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
+        // echo $password;
+        if (password_verify($password, $result['password'])) {
             $_SESSION['authenticated'] = true;
             return true;
         } else {
@@ -42,18 +42,72 @@ class Account extends DB
         }
     }
 
-    public function checkActive($email)
+    public function checkActive($phoneNumber)
+    {
+        $sql = "SELECT * FROM account WHERE phoneNumber = $phoneNumber";
+        $rows = $this->conn->query($sql);
+
+        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
+        if (!$result['active']) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public function updateActive($active, $phoneNumber)
+    {
+        $sql = "UPDATE account SET active = ? WHERE phoneNumber = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows->bind_param('ss', $active, $phoneNumber);
+        try {
+            if ($rows->execute()) {
+                return array(
+                    "status" => true,
+                    "msg" => "",
+                );
+            } else {
+                return array(
+                    "status" => false,
+                    "msg" => "",
+                );
+            };
+        } catch (Exception $e) {
+            return array(
+                "status" => false,
+                "msg" => "",
+            );
+        }
+    }
+    public function updatePassword($newPassword, $phoneNumber)
+    {
+        $sql = "UPDATE account SET password = ? WHERE phoneNumber = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows->bind_param('ss', $newPassword, $phoneNumber);
+        try {
+            if ($rows->execute()) {
+                return true;
+            } else {
+                return false;
+            };
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function checkWrongPassword($email)
     {
         $sql = "SELECT * FROM account WHERE email = ?";
         $rows = $this->conn->prepare($sql);
         $rows->bind_param('s', $email);
         $rows->execute();
         $result = $rows->fetch();
-        if ($result['active'] === 0) {
+        if ($result['wrongPassword'] === 3) {
+
             return 0;
-        } else if ($result['active'] === 1) {
+        } else if ($result['wrong'] === 1) {
+            // đã đổi mật khẩu nhưng chưa check thông tin
             return 1;
         } else {
+            // Hoàn tất tài khoản
             return 2;
         }
     }
@@ -68,19 +122,19 @@ class Account extends DB
             if ($rows->execute()) {
                 return array(
                     "status" => true,
-                    "response" => "Create Successfully!! Please check your email to get your username and password.",
+                    "msg" => "Create Successfully!! Please check your email to get your username and password.",
                     "redirect" => "../login"
                 );
             } else {
                 return array(
                     "status" => false,
-                    "response" => "Failed to register account!",
+                    "msg" => "Failed to register account!",
                 );
             };
         } catch (Exception $e) {
             return array(
                 "status" => false,
-                "response" => $e,
+                "msg" => $e,
             );
         };
     }

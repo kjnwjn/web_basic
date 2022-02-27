@@ -1,13 +1,16 @@
 <?php
-class Home extends Controller{
+class Home extends Controller
+{
 
     // public $RenderSlider;
     public $account;
-    public function __construct(){
+    public function __construct()
+    {
         // $this->RenderSlider = $this->model('Slider');
         $this->account = $this->model('Account');
     }
-    function default(){
+    function default()
+    {
         // khởi tạo đối tượng tèo sử dụng được những hàm từ đối tượng sinhvienmodel
         $a = 'quan@gmail.com';
         $b = '123456';
@@ -15,25 +18,26 @@ class Home extends Controller{
 
         // $dssv = $this->SinhVienModel->SinhVien();
         $isEmail = $this->account->is_email_exit($a);
-        $this->view('Master3',[]);
-        
+        $this->view('Master3', []);
     }
-    function detailAccount(){
+    function detailAccount()
+    {
         echo "Home-ABC";
     }
-    function changePassword(){
+    function changePassword()
+    {
         echo "Change Password";
     }
-    function history($id){
-
+    function history($id)
+    {
     }
-    function cashOut($id){
-
+    function cashOut($id)
+    {
     }
-    function putMoney($id){
-
+    function putMoney($id)
+    {
     }
-    function transfer($id){
-
+    function transfer($id)
+    {
     }
 }

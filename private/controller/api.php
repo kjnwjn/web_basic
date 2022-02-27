@@ -45,10 +45,19 @@ class Api extends Controller
                 $username = trim($_POST['username']);
                 if ($this->model('Account')->is_phone_number_exit($username)) {
                     if ($this->model('Account')->login($username, $password)) {
-                        echo json_encode([
-                            'status' => true,
-                            'msg' => 'Login successfully!'
-                        ]);
+                        $_SESSION['username'] = $username;
+                        if (!$this->model('Account')->checkActive($username)) {
+                            echo json_encode([
+                                'status' => false,
+                                'msg' => 'Please change your password!',
+                                'redirect' => '../changePassword'
+                            ]);
+                        } else {
+                            echo json_encode([
+                                'status' => true,
+                                'msg' => 'Login successfully!'
+                            ]);
+                        }
                     } else {
                         echo json_encode([
                             'status' => false,
@@ -161,6 +170,64 @@ class Api extends Controller
                     echo json_encode($result);
                     $this->utils()->sendMail($phoneNumber, $passwordDefault);
                 };
+            }
+        }
+    }
+
+    function changePassword()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode([
+                'status' => false,
+                'msg' => 'Method not allowed!'
+            ]);
+            exit();
+        } else {
+            if (!isset($_POST['oldPassword']) || empty(trim($_POST['oldPassword']))) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Old password is required'
+                ]);
+            } else if (!$this->model('Account')->login($_SESSION['username'], $_POST['oldPassword'])) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Your password is not correct!'
+                ]);
+            } else if (!isset($_POST['newPassword']) || empty(trim($_POST['newPassword']))) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'New password is required'
+                ]);
+            } else if (strlen($_POST['newPassword']) != 6) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Password must be 6 characters!'
+                ]);
+            } else if (!isset($_POST['confirmPassword']) || empty(trim($_POST['confirmPassword']))) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Confirmation password is required'
+                ]);
+            } else if ($_POST['confirmPassword'] !== $_POST['newPassword']) {
+                echo json_encode([
+                    'status' => false,
+                    'msg' => 'Your password and confirmation password do not match.'
+                ]);
+            } else {
+                if (!$this->model('Account')->checkActive($_SESSION['username'])) {
+                    $this->model('Account')->updateActive(true, $_SESSION['username']);
+                } else {
+                    $newPassword = $_POST['newPassword'];
+                    $password = password_hash($newPassword, PASSWORD_DEFAULT);
+                    if ($this->model('Account')->updatePassword($password, $_SESSION['username'])) {
+                        echo json_encode([
+                            'status' => true,
+                            'msg' => 'Update Password Successfully!',
+                            'redirect' => '../'
+                        ]);
+                    }
+                }
             }
         }
     }
