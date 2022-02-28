@@ -29,12 +29,16 @@ class Account extends DB
     }
     public function login($phoneNumber, $password)
     {
-        $sql = "SELECT * FROM account WHERE phoneNumber = $phoneNumber";
+        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
         $rows = $this->conn->query($sql);
-
         $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
         // echo $password;
-        if (password_verify($password, $result['password'])) {
+        if (strlen($result['password']) <= 6) {
+            if ($password === $result['password']) {
+                $_SESSION['authenticated'] = true;
+                return true;
+            }
+        } else if (password_verify($password, $result['password'])) {
             $_SESSION['authenticated'] = true;
             return true;
         } else {
@@ -44,7 +48,7 @@ class Account extends DB
 
     public function checkActive($phoneNumber)
     {
-        $sql = "SELECT * FROM account WHERE phoneNumber = $phoneNumber";
+        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
         $rows = $this->conn->query($sql);
 
         $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);

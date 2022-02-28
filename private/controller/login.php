@@ -18,8 +18,6 @@ class Login extends Controller
 
         // $dssv = $this->SinhVienModel->SinhVien();
         // $isEmail = $this->account->is_email_exit($a);
-        $this->view('Master2', [
-            'page' => 'login'
-        ]);
+        $this->view('login', []);
     }
 }

@@ -27,7 +27,10 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
+
             </form>
+
+            <a href="#" class="logout">logout</a>
         </div>
     </form>
 </body>

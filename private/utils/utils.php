@@ -96,7 +96,7 @@ class Util
         }
     }
 
-    public function sendMail($username, $password)
+    public function sendMail($username, $password, $email)
     {
 
         // Instantiation and passing `true` enables exceptions
@@ -114,7 +114,7 @@ class Util
             //Recipients
             $mail->setFrom('3puz627rgnyn6m@gmail.com', 'Mailer');
             // $mail->addAddress('joe@example.net', 'Joe User'); // Add a recipient
-            $mail->addAddress('kjnwjnpham@gmail.com'); // Name is optional
+            $mail->addAddress($email); // Name is optional
             // $mail->addReplyTo('info@example.com', 'Information');
             // $mail->addCC('cc@example.com');
             // $mail->addBCC('bcc@example.com');

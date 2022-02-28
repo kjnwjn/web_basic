@@ -55,7 +55,8 @@ class Api extends Controller
                         } else {
                             echo json_encode([
                                 'status' => true,
-                                'msg' => 'Login successfully!'
+                                'msg' => 'Login successfully!',
+                                'redirect' => '../'
                             ]);
                         }
                     } else {
@@ -168,7 +169,7 @@ class Api extends Controller
                     $idCard2 = $imageValidate2['path'];
                     $result = $this->model('Account')->add_Account($email, $phoneNumber, $password, $fullName, $address, $date, $idCard1, $idCard2);
                     echo json_encode($result);
-                    $this->utils()->sendMail($phoneNumber, $passwordDefault);
+                    $this->utils()->sendMail($phoneNumber, $passwordDefault, $email);
                 };
             }
         }
@@ -176,7 +177,6 @@ class Api extends Controller
 
     function changePassword()
     {
-
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode([
                 'status' => false,
@@ -184,9 +184,14 @@ class Api extends Controller
             ]);
             exit();
         } else {
-            if (!isset($_POST['oldPassword']) || empty(trim($_POST['oldPassword']))) {
+            if (!isset($_SESSION['authenticated'])) {
                 echo json_encode([
                     'status' => false,
+                    'msg' => 'Please login first'
+                ]);
+            } else if (!isset($_POST['oldPassword']) || empty(trim($_POST['oldPassword']))) {
+                echo json_encode([
+                    'status' => $_POST,
                     'msg' => 'Old password is required'
                 ]);
             } else if (!$this->model('Account')->login($_SESSION['username'], $_POST['oldPassword'])) {

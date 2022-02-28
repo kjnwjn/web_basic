@@ -9,8 +9,6 @@ class Register extends Controller
         // khời tạo đối tượng sử dụng view của home load ra data là danh sách student 
 
         // $dssv = $teo->SinhVien();
-        $this->view('Master2', [
-            'page' => 'register'
-        ]);
+        $this->view('register', []);
     }
 }
