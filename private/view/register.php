@@ -49,17 +49,17 @@
 
             <div class="form-group form-validation">
                 <label for="date" class="form-label">Date</label>
-                <input id="date" name="address" type="date" placeholder="Date" class="form-control" rules="required" />
+                <input id="date" name="date" type="date" placeholder="Date" class="form-control" rules="required" />
                 <span class="error-message"></span>
             </div>
             <div class="form-group form-validation">
                 <label for="idCard1" class="form-label">Id Image 1</label>
-                <input id="idCard1" name="idCard1" type="file" placeholder="File ID 1" class="form-control" rules="required" />
+                <input id="idCard1" name="idCard1" type="file" placeholder="File ID 1" class="form-control" rules="required" accept="image/png, image/gif, image/jpeg" />
                 <span class="error-message"></span>
             </div>
             <div class="form-group form-validation">
                 <label for="idCard2" class="form-label">Id Image 2</label>
-                <input id="idCard2" name="idCard2" type="file" placeholder="File ID 2" class="form-control" rules="required" />
+                <input id="idCard2" name="idCard2" type="file" placeholder="File ID 2" class="form-control" rules="required" accept="image/png, image/gif, image/jpeg" />
                 <span class="error-message"></span>
             </div>
             <button class="form-submit btn">Register</button>
@@ -90,7 +90,7 @@
 
 
                 // var data = e.formValues()
-                var url = 'http://localhost/api/register'
+                var url = '../api/register'
                 $.ajax({
                     url,
                     method: 'POST',
@@ -99,13 +99,15 @@
                     contentType: false,
                     data: formData,
                 }).done(response => {
-                    console.log(response);
                     if (!response.status) {
                         toastr.error(response.msg);
                     } else {
                         toastr.success(response.msg);
-                        window.location.href = response.redirect;
+                        setTimeout(link => {
+                            window.location.href = '../login';
+                        }, 3000)
                         // window.location.reload();
+
                     }
                 });
             }

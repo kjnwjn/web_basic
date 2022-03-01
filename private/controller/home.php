@@ -18,7 +18,7 @@ class Home extends Controller
 
         // $dssv = $this->SinhVienModel->SinhVien();
         $isEmail = $this->account->is_email_exit($a);
-        $this->view('Master3', []);
+        $this->view('Master1', []);
     }
     function detailAccount()
     {

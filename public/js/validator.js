@@ -26,11 +26,18 @@ function Validation(formSelector, options) {
     },
     min: function (min) {
       return function (value) {
-        return value.length >= min
+        return (value.length = min
           ? undefined
-          : `This field must be at least ${min} characters`;
+          : `This field must be ${min} characters`);
       };
     },
+    // max: function (max) {
+    //   return function (value) {
+    //     return value.length <= max
+    //       ? undefined
+    //       : `This field must be ${max} characters`;
+    //   };
+    // },
   };
 
   if (issetForm) {

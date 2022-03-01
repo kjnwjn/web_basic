@@ -97,22 +97,59 @@ class Account extends DB
             return false;
         }
     }
-    public function checkWrongPassword($email)
+    public function checkWrongPassword($phoneNumber)
     {
-        $sql = "SELECT * FROM account WHERE email = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('s', $email);
-        $rows->execute();
-        $result = $rows->fetch();
-        if ($result['wrongPassword'] === 3) {
-
-            return 0;
-        } else if ($result['wrong'] === 1) {
-            // đã đổi mật khẩu nhưng chưa check thông tin
-            return 1;
+        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
+        $rows = $this->conn->query($sql);
+        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
+        if ($result['wrongPassword'] > 0) {
+            if ($result['wrongPassword'] == 1) {
+                $_SESSION['last_time'] = time();
+            }
+            return $result['wrongPassword'];
         } else {
-            // Hoàn tất tài khoản
-            return 2;
+            return false;
+        }
+    }
+    public function updateWrongPassword($wrongpassword, $phoneNumber)
+    {
+        $sql = "UPDATE account SET wrongpassword = ? WHERE phoneNumber = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows->bind_param('ss', $wrongpassword, $phoneNumber);
+        try {
+            if ($rows->execute()) {
+                return true;
+            } else {
+                return false;
+            };
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function checkAbnormal($phoneNumber)
+    {
+        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
+        $rows = $this->conn->query($sql);
+        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
+        if ($result['abnormal'] > 0) {
+            return $result['abnormal'];
+        } else {
+            return false;
+        }
+    }
+    public function updateAbnormal($abnormal, $phoneNumber)
+    {
+        $sql = "UPDATE account SET abnormal = ? WHERE phoneNumber = ?";
+        $rows = $this->conn->prepare($sql);
+        $rows->bind_param('ss', $abnormal, $phoneNumber);
+        try {
+            if ($rows->execute()) {
+                return true;
+            } else {
+                return false;
+            };
+        } catch (Exception $e) {
+            return false;
         }
     }
 
@@ -124,22 +161,12 @@ class Account extends DB
         // $rows->execute();
         try {
             if ($rows->execute()) {
-                return array(
-                    "status" => true,
-                    "msg" => "Create Successfully!! Please check your email to get your username and password.",
-                    "redirect" => "../login"
-                );
+                return true;
             } else {
-                return array(
-                    "status" => false,
-                    "msg" => "Failed to register account!",
-                );
+                return false;
             };
         } catch (Exception $e) {
-            return array(
-                "status" => false,
-                "msg" => $e,
-            );
+            return false;
         };
     }
 }

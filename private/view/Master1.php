@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,27 +14,23 @@
         .carousel-item {
             max-height: 100px !important;
         }
-        .realitem{
-            background-color:#ccc;
+
+        .realitem {
+            background-color: #ccc;
         }
     </style>
 </head>
-<body> 
-    <div class="container">
-        <div class="row">
-            <?php require_once('./private/view/blocks/header.php'); ?>
-            <?php require_once('./private/view/blocks/navba.php'); ?>
-        </div>
 
-        <div class="row">
-            <div class="col-lg-3">
-                <?php require_once('./private/view/blocks/category.php'); ?>
-            </div>
-            <div class="col-lg-9 realitem" >
-                <?php require_once('./private/view/pages/'.$data['pages'].'.php'); ?>
-            </div>
-        </div>
-    </div>   
+<body>
+    <div class="container">
+        <button btn-primary onclick="redirect()">login</button>
+    </div>
 
 </body>
+<script>
+    function redirect() {
+        window.location.href = '../register'
+    }
+</script>
+
 </html>

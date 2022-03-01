@@ -35,20 +35,17 @@ class Api extends Controller
                     'status' => false,
                     'msg' => 'Password is required!'
                 ]);
-            } else if (strlen($_POST['password']) != 6) {
-                echo json_encode([
-                    'status' => false,
-                    'msg' => 'Password must be 6 characters!'
-                ]);
             } else {
                 $password = trim($_POST['password']);
                 $username = trim($_POST['username']);
                 if ($this->model('Account')->is_phone_number_exit($username)) {
-                    if ($this->model('Account')->login($username, $password)) {
+                    if ($this->model('Account')->login($username, $password) && $this->model('Account')->checkWrongPassword($username)) {
+                        $this->model('Account')->updateWrongPassword(3, $username);
+                        // $this->model('Account')->updateAbnormal(1, $username);
                         $_SESSION['username'] = $username;
                         if (!$this->model('Account')->checkActive($username)) {
                             echo json_encode([
-                                'status' => false,
+                                'status' => true,
                                 'msg' => 'Please change your password!',
                                 'redirect' => '../changePassword'
                             ]);
@@ -60,10 +57,48 @@ class Api extends Controller
                             ]);
                         }
                     } else {
-                        echo json_encode([
-                            'status' => false,
-                            'msg' => 'Invalid Password!'
-                        ]);
+
+                        // nếu sai mật khẩu quá 3 lần
+                        $wrongpassword = $this->model('Account')->checkWrongPassword($username);
+                        echo $wrongpassword;
+
+                        if (!$wrongpassword) {
+                            $_SESSION['last_tmp_time'] = time();
+                            $abnormal = $this->model('Account')->checkAbnormal($username);
+                            if (!$abnormal) {
+
+                                echo json_encode([
+                                    'status' => false,
+                                    'msg' => 'Tài khoản đã bị khóa do nhập sai mật khẩu nhiều lần, vui lòng liên hệ quản trị viên để được hỗ trợ.',
+                                    'abnormal' => 0
+                                ]);
+                            } else {
+                                if ($this->model('Account')->updateAbnormal(0, $username)) {
+                                    if (date('i', time() - $_SESSION['last_time']) === '60') {
+                                        $this->model('Account')->updateWrongPassword(3, $username);
+                                    } else {
+                                        echo json_encode([
+                                            'status' => false,
+                                            'msg' => 'Tài khoản hiện đang bị tạm khóa, vui lòng thử lại sau 1 phút.',
+                                            'abnormal' => 1
+                                        ]);
+                                    }
+                                }
+                            }
+                        } else {
+                            if ($wrongpassword == 1) {
+                                $_SESSION['last_time'] = time();
+                                echo $_SESSION['last_time'];
+                            }
+                            if ($this->model('Account')->updateWrongPassword($wrongpassword - 1, $username)) {
+
+                                echo json_encode([
+                                    'status' => false,
+                                    'msg' => 'Invalid Password!'
+
+                                ]);
+                            }
+                        }
                     }
                 } else {
                     echo json_encode([
@@ -168,8 +203,26 @@ class Api extends Controller
                     $idCard1 = $imageValidate1['path'];
                     $idCard2 = $imageValidate2['path'];
                     $result = $this->model('Account')->add_Account($email, $phoneNumber, $password, $fullName, $address, $date, $idCard1, $idCard2);
-                    echo json_encode($result);
-                    $this->utils()->sendMail($phoneNumber, $passwordDefault, $email);
+                    if ($result) {
+                        if ($this->utils()->sendMail($phoneNumber, $passwordDefault, $email)) {
+                            echo json_encode([
+                                "status" => true,
+                                "msg" => "Create Successfully!! Please check your email to get your username and password.",
+                                "redirect" => "http://localhost/login"
+                            ]);
+                        } else {
+                            echo json_encode([
+                                "status" => false,
+                                "msg" => "An error occurred while creating, please try again.",
+                                "redirect" => ""
+                            ]);
+                        }
+                    } else {
+                        return json_encode([
+                            "status" => false,
+                            "msg" => "Failed to register account!",
+                        ]);
+                    }
                 };
             }
         }

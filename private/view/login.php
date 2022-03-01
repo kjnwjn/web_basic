@@ -31,10 +31,10 @@
             </div>
             <div class="form-group form-validation">
                 <label for="password" class="form-label">password</label>
-                <input id="password" name="password" placeholder="password" type="password" class="form-control" rules="required&min=6" />
+                <input id="password" name="password" placeholder="Type 6 characters" type="password" class="form-control" rules="required&min=6" />
                 <span class="error-message"></span>
             </div>
-            <button type="submit" class="form-submit btn">Đăng ký</button>
+            <button type="submit" id="btnSubmit" class="form-submit btn">Đăng ký</button>
         </form>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -51,21 +51,18 @@
                 $.ajax({
                     url,
                     method: 'POST',
-
                     data: data
                 }).done(response => {
                     console.log(response);
                     if (!response.status) {
-                        if (response.redirect) {
-                            toastr.success(response.msg)
-                            window.location.href = response.redirect;
+                        if (response.abnormal === 1) {
+                            toastr.error(response.msg);
                         } else {
-                            toastr.error(response.msg)
+                            toastr.error(response.msg);
                         }
                     } else {
                         toastr.success(response.msg)
                         window.location.href = response.redirect;
-                        // window.location.reload();
                     }
                 });
             }
