@@ -1,9 +1,3 @@
-<div>    
-    <h1>PAGE HOME</h1>
-    <pre>
-        <?php print_r($data['SV']); ?>
-    </pre> 
-    <h1 style="color: <?= $data["mau"] ?>">sadsa</h1>
-</div>
-
-    
+<di class="text-center">
+    <h2>HOME PAGE</h2>
+</di>

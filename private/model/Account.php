@@ -1,172 +1,85 @@
 <?php
 class Account extends DB
 {
-    public function is_email_exit($email)
+    function INSERT($field = [])
     {
-        $sql = "SELECT * FROM account WHERE email = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('s', $email);
-        $rows->execute();
-        $result = $rows->fetch();
-        if ($result > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public function is_phone_number_exit($phoneNumber)
-    {
-        $sql = "SELECT * FROM account WHERE phoneNumber = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('s', $phoneNumber);
-        $rows->execute();
-        $result = $rows->fetch();
-        if ($result > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    public function login($phoneNumber, $password)
-    {
-        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
-        $rows = $this->conn->query($sql);
-        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
-        // echo $password;
-        if (strlen($result['password']) <= 6) {
-            if ($password === $result['password']) {
-                $_SESSION['authenticated'] = true;
-                return true;
-            }
-        } else if (password_verify($password, $result['password'])) {
-            $_SESSION['authenticated'] = true;
-            return true;
-        } else {
-            return false;
-        }
-    }
+        $key_field = [];
+        $value_field = [];
 
-    public function checkActive($phoneNumber)
-    {
-        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
-        $rows = $this->conn->query($sql);
+        foreach ($field as $key => $value) {
+            array_push($key_field, $key);
+            array_push($value_field, '"' . $value . '"');
+        }
 
-        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
-        if (!$result['active']) {
-            return false;
-        } else {
+        $value = implode(',', $value_field);
+        $field_name = implode(',', $key_field);
+
+        try {
+            $sql = 'INSERT INTO account (' . $field_name . ') VALUES (' . $value . ')';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
             return true;
-        }
-    }
-    public function updateActive($active, $phoneNumber)
-    {
-        $sql = "UPDATE account SET active = ? WHERE phoneNumber = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('ss', $active, $phoneNumber);
-        try {
-            if ($rows->execute()) {
-                return array(
-                    "status" => true,
-                    "msg" => "",
-                );
-            } else {
-                return array(
-                    "status" => false,
-                    "msg" => "",
-                );
-            };
-        } catch (Exception $e) {
-            return array(
-                "status" => false,
-                "msg" => "",
-            );
-        }
-    }
-    public function updatePassword($newPassword, $phoneNumber)
-    {
-        $sql = "UPDATE account SET password = ? WHERE phoneNumber = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('ss', $newPassword, $phoneNumber);
-        try {
-            if ($rows->execute()) {
-                return true;
-            } else {
-                return false;
-            };
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-    public function checkWrongPassword($phoneNumber)
-    {
-        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
-        $rows = $this->conn->query($sql);
-        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
-        if ($result['wrongPassword'] > 0) {
-            if ($result['wrongPassword'] == 1) {
-                $_SESSION['last_time'] = time();
-            }
-            return $result['wrongPassword'];
-        } else {
-            return false;
-        }
-    }
-    public function updateWrongPassword($wrongpassword, $phoneNumber)
-    {
-        $sql = "UPDATE account SET wrongpassword = ? WHERE phoneNumber = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('ss', $wrongpassword, $phoneNumber);
-        try {
-            if ($rows->execute()) {
-                return true;
-            } else {
-                return false;
-            };
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-    public function checkAbnormal($phoneNumber)
-    {
-        $sql = "SELECT * FROM account WHERE phoneNumber = " . $phoneNumber . "";
-        $rows = $this->conn->query($sql);
-        $result = mysqli_fetch_array($rows, MYSQLI_ASSOC);
-        if ($result['abnormal'] > 0) {
-            return $result['abnormal'];
-        } else {
-            return false;
-        }
-    }
-    public function updateAbnormal($abnormal, $phoneNumber)
-    {
-        $sql = "UPDATE account SET abnormal = ? WHERE phoneNumber = ?";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('ss', $abnormal, $phoneNumber);
-        try {
-            if ($rows->execute()) {
-                return true;
-            } else {
-                return false;
-            };
         } catch (Exception $e) {
             return false;
         }
     }
 
-    public function add_Account($email, $phoneNumber, $password, $fullName, $address, $date, $idCard1, $idCard2)
+    function SELECT_ONE($condition = '', $conditionValue = '')
     {
-        $sql = "INSERT INTO account( email, phoneNumber, password, fullName, address, date, idCard1, idCard2) VALUES (?,?,?,?,?,?,?,?)";
-        $rows = $this->conn->prepare($sql);
-        $rows->bind_param('ssssssss', $email, $phoneNumber, $password, $fullName, $address, $date, $idCard1, $idCard2);
-        // $rows->execute();
+        
+        $sql = 'SELECT * from account WHERE ' . $condition . ' = "' . $conditionValue . '"';
+        $stmt = $this->conn->query($sql);
+        $result = mysqli_fetch_array($stmt, MYSQLI_ASSOC);
+        return $result ? $result : array();
+    }
+    
+    function SELECT($condition = '', $conditionValue = '')
+    {
+        $sql = 'SELECT * from `account` WHERE ' . $condition . ' = "' . $conditionValue . '"';
+        $stmt = $this->conn->query($sql);
+        $result = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
+        return $result ? $result : array();
+    }
+
+    function SELECT_ORDER_BY_ASC($condition = '', $conditionValue = '',$fieldValue = '')
+    {
+        $sql = 'SELECT * from `account` WHERE '. $condition . ' = "' . $conditionValue . '" ORDER BY `'.$fieldValue . '` ASC';
+        $stmt = $this->conn->query($sql);
+        $result = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
+        return $result ? $result : array();
+    }
+    function SELECT_ORDER_BY_DESC($condition = '', $conditionValue = '',$fieldValue = '')
+    {
+        $sql = 'SELECT * from `account` WHERE '. $condition . ' = "' . $conditionValue . '" ORDER BY `'.$fieldValue . '` DESC';
+        $stmt = $this->conn->query($sql);
+        $result = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
+        return $result ? $result : array();
+    }
+
+    function SELECT_ALL()
+    {
+        $sql = 'SELECT * from account';
+        $stmt = $this->conn->query($sql);
+        $result = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
+        return $result ? $result : array();
+    }
+
+    function UPDATE_ONE($conditions = [], $toUpdate = [])
+    {
         try {
-            if ($rows->execute()) {
-                return true;
-            } else {
-                return false;
-            };
+            $conditionName = array_keys($conditions)[0];
+            $conditionValue = $conditions[$conditionName];
+            $toUpdateName = array_keys($toUpdate)[0];
+            $newValue = $toUpdate[$toUpdateName];
+            $sql = 'UPDATE account SET ' . $toUpdateName . ' = "' . $newValue . '" WHERE ' . $conditionName . ' = "' . $conditionValue . '"';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $sql = 'UPDATE account SET updatedAt = ' . time() . ' WHERE ' . $conditionName . ' = "' . $conditionValue . '"';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            return true;
         } catch (Exception $e) {
             return false;
-        };
+        }
     }
 }
