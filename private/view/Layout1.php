@@ -13,12 +13,6 @@
     <!-- font awesome js -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
      <!-- Alertify JS -->
-<<<<<<< HEAD
-     <link rel="icon" 
-     type="image/png" 
-     href="../../public/assest/img/icon.png">
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
     <link rel="stylesheet" href="<?= getenv('BASE_URL') ?>style.css">
     <title>
         <?= isset($data['title']) ? $data['title'] : 'Document' ?>
@@ -32,7 +26,7 @@
     </style>
 </head>
 
-<body onload="preloader()" style="font-size: initial;">
+<body>
     <!--Page loader-->
     <div class="loader-wrapper">
         <div class="loader-circle">
@@ -41,22 +35,13 @@
     </div>
 
     <div class="container-fluid ">
-<<<<<<< HEAD
-        <header class="row header-admin shadow-sm">
-            <div class="col-lg-3 col-md-4 header__app_name ">
-=======
         <header class="row header shadow-sm">
             <div class="col-lg-3 col-md-2 header__app_name ">
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 <h2 class="text-center pt-2 mb-0"><a href="<?= getenv('BASE_URL') ?>" class="app__name-link">
                         <i class="fa-solid fa-compass fs-2"></i>
                         KIWI</a></h2>
             </div>
-<<<<<<< HEAD
-            <div class="col-lg-9 col-md-8 header-left">
-=======
             <div class="col-lg-9 col-md-10 header-left">
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 <nav class="navbar navbar-light ">
                     <div class="container-fluid ps-0">
                         <!-- <input type="checkbox" hidden id="sidebartrans"> -->
@@ -76,7 +61,10 @@
                                     <a class="dropdown-item" href="<?= getenv('BASE_URL') ?>logout">
                                         <i class="fa-solid fa-power-off"></i>
                                         Logout</a>
-                                    <!-- <div class="dropdown-divider"></div> -->
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="fa-solid fa-power-off"></i>
+                                        Logout</a>
                                 </div>
                             </div>
                         </div>
@@ -86,84 +74,35 @@
         </header>
 
         <div class="row main-content">
-<<<<<<< HEAD
-            <div class="col-lg-3 col-md-4 col-sm-1 col-1 body_taskbar sidebar pl-0">
-=======
             <div class="col-lg-3 col-md-2 col-xs-6 body_taskbar sidebar pl-0">
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 <div class="inner-sidebar">
                     <div class="sidebar-menu-container">
                         <ul class="sidebar-menu my-4 px-0">
                             <li class="sidebar__item py-3">
-<<<<<<< HEAD
-                                <a href="<?= getenv('BASE_URL') ?>dashboard" 
-=======
                                 <a href="<?= getenv('BASE_URL') ?>dashboard" onclick="toggle_menu('dashboard'); return false"
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                                     class="sidebar__item-link"><i class="fa fa-dashboard mx-2"> </i>
                                     <span class="sidebar__text">Dashboard <i
                                             class="fa fa-angle-right float-right"></i></span>
                                 </a>
                             </li>
                             <li class="sidebar__item py-3">
-<<<<<<< HEAD
-                                <a href="<?= getenv('BASE_URL') ?>dashboard/listAccount" 
-=======
                                 <a href="<?= getenv('BASE_URL') ?>dashboard/listAccount" onclick="toggle_menu('dashboard'); return false"
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                                     class="sidebar__item-link"><i class="fa-solid fa-users mx-2"></i>
                                     <span class="sidebar__text">Account <i
                                             class="fa fa-angle-right float-right"></i></span>
                                 </a>
                             </li>
                             <li class="sidebar__item py-3">
-<<<<<<< HEAD
-                                <a href="<?= getenv('BASE_URL') ?>dashboard/listtransactions" 
-=======
                                 <a href="<?= getenv('BASE_URL') ?>dashboard/listtransactions" onclick="toggle_menu('dashboard'); return false"
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                                     class="sidebar__item-link"><i class="fa-solid fa-money-bill mx-2"></i>
-                                    <span class="sidebar__text">Transaction Confirm<i
+                                    <span class="sidebar__text">Transaction <i
                                             class="fa fa-angle-right float-right"></i></span>
                                 </a>
                             </li>
-                            <li class="sidebar__item py-3">
-<<<<<<< HEAD
-                                <a href="<?= getenv('BASE_URL') ?>dashboard/listAllTransaction" 
-=======
-                                <a href="<?= getenv('BASE_URL') ?>dashboard/listAllTransaction" onclick="toggle_menu('dashboard'); return false"
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
-                                    class="sidebar__item-link"><i class="fa-solid fa-money-bill-1-wave mx-2"></i>
-                                    <span class="sidebar__text">All Transactions
-                                        <i class="fa fa-angle-right float-right"></i></span>
-                                </a>
-                            </li>
-<<<<<<< HEAD
-                            <li class="sidebar__item py-3 menu__icon">
-                                <span  
-                                    class="sidebar__item-link"><i class="fa-solid fa-arrow-left  mx-2"></i></i>
-                                    <span class="sidebar__text"> Hide
-                                    
-                                </span>
-                            </li>
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                         </ul>
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-            <div class="col-lg-9 col-md-8 col-sm-11 col-12 main__content">
-                <?php
-                    isset($data['page']) ?
-                        include('./private/view/pages/adminPages/' . $data['page'] . '.php') : null
-                ?>
-            </div>
-
-        </div>
-
-    </div>
-=======
             
             <?php
                 isset($data['page']) ?
@@ -172,8 +111,7 @@
         </div>
 
     </div>
-        <!-- <script type="module" src="<?= getenv('BASE_URL') ?>main.js"></script> -->
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
+        <script type="module" src="<?= getenv('BASE_URL') ?>main.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -182,7 +120,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <!-- JavaScript -->
         <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-        
+
         <!-- CSS -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
         <!-- Default theme -->
@@ -191,7 +129,7 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
         <!-- Bootstrap theme -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
-        
+
         <!-- 
             RTL version
         -->
@@ -202,8 +140,8 @@
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.rtl.min.css"/>
         <!-- Bootstrap theme -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.rtl.min.css"/>
-        
-        <script src="<?= getenv('BASE_URL') ?>main.js"></script>
+         
+
        
 </body>
 

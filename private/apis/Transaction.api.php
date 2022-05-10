@@ -12,6 +12,7 @@ class transactionApi extends Controller{
     function __construct($route, $param)
     {
         $this->middleware = new ApiMiddleware();
+<<<<<<< HEAD
         $this->middleware->authentication();
         $payload = $this->middleware->jwt_get_payload();
         !($payload) ? 
@@ -39,6 +40,16 @@ class transactionApi extends Controller{
             case 'phone-card-transaction':
                 $this->middleware->request_method('get');
                 $this->listPhoneCardbyIdTrans($param);
+=======
+        $this->middleware->request_method('get');
+        $this->middleware->authentication();
+        $payload = $this->middleware->jwt_get_payload();
+        switch ($route) {
+            case 'histories':
+                $this->histories($payload);
+                break;
+            case 'transaction__details': 
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 break;
             case 'confirm-OTP':
                 break;
@@ -52,6 +63,7 @@ class transactionApi extends Controller{
 
     }
 
+<<<<<<< HEAD
     function histories($payload,$param){
         $allTrans = $this->model('Transaction')->SELECT_ORDER_BY_DESC('email',$payload->email,'createdAt') ;
         !$allTrans ?$this->middleware->json_send_response(200, array(
@@ -194,3 +206,9 @@ class transactionApi extends Controller{
     }
 }
     
+=======
+    function histories($payload){
+
+    }
+}
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22

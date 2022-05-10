@@ -63,7 +63,11 @@
             <input id="birthday" name="birthday" placeholder="birthday" type="text" class="form-control" rules="required" />
             <span class="error-message"></span>
         </div> 
+<<<<<<< HEAD
         <!-- <div class="form-group form-validation">
+=======
+        <div class="form-group form-validation">
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
             <label for="idCard_front" class="form-label">ID Card front</label>
             <input id="idCard_front" name="idCard_front" placeholder="idCard_front" type="file" class="form-control" rules="required" multipart/>
             <span class="error-message"></span>
@@ -72,7 +76,11 @@
             <label for="idCard_back" class="form-label">ID Card back</label>
             <input id="idCard_back" name="idCard_back" placeholder="idCard_back" type="file" class="form-control" rules="required" multipart/>
             <span class="error-message"></span>
+<<<<<<< HEAD
         </div> -->
+=======
+        </div>
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         <button type="submit" id="btnSubmit" class="form-submit btn" >Đăng ký</button>
     </form>
 </div>

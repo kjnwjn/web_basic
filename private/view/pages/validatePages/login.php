@@ -5,7 +5,13 @@
         margin-top: 12px;
         font-size: 12px;
     }
+<<<<<<< HEAD
   
+=======
+    .login-main{
+        background-image: linear-gradient(45deg, #8b5aed 0%, #78ebfc 100%);
+    }
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
 </style>
 <div class="main login-main" style="background-image: linear-gradient(45deg, #8b5aed 0%, #78ebfc 100%)">
     <form action="" method="POST" class="form" id="login-form">

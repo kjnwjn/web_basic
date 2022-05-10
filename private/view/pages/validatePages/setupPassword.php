@@ -9,7 +9,11 @@
         background-image: linear-gradient(45deg, #222D73 0%, #78ebfc 100%);
     }
 </style>
+<<<<<<< HEAD
 <div class="main login-main" style="background-image: linear-gradient(45deg, #222D73 0%, #78ebfc 100%)">
+=======
+<div class="main login-main">
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
     <form action="" method="POST" class="form" id="setupPassword-form">
         <h3 class="heading">Setup Password</h3>
         <p class="desc">You need to change your password first.</p>

@@ -5,7 +5,6 @@ require_once('./private/middlewares/Api.middleware.php');
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-
 class AdminApi extends Controller
 {
     protected $middleware;

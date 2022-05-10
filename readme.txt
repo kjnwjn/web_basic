@@ -19,3 +19,7 @@ Loại giao dịch(action)
 0 : pending (money > 5000000)
 1 : ok
 2 : cancel
+<<<<<<< HEAD
+=======
+
+>>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
