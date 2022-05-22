@@ -1,6 +1,6 @@
 <?php
 
-require_once('./private/core/jwt/vendor/autoload.php');
+require_once('./vendor/autoload.php');
 require_once('./private/middlewares/Api.middleware.php');
 
 use Firebase\JWT\JWT;
@@ -67,15 +67,12 @@ class AccountApi extends Controller
                 $this->middleware->authentication();
                 $this->userDetails($param);
                 break;
-<<<<<<< HEAD
             case 'upload-image':
                 $this->middleware->request_method('post');
                 $this->middleware->authentication();
                 $payload = $this->middleware->jwt_get_payload();
                 $this->uploadImage($payload);
                 break;
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
             default:
                 $this->middleware->json_send_response(404, array(
                     'status' => false,
@@ -126,11 +123,7 @@ class AccountApi extends Controller
 
     function login()
     {
-<<<<<<< HEAD
         // print_r($_POST);
-=======
-
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         if(isset($_POST['phoneNumber']) && trim($_POST['phoneNumber'] == 'admin')){
             if(isset($_POST['password']) && trim($_POST['password']) =='123456'){
                 $jwt = JWT::encode(array(
@@ -170,11 +163,7 @@ class AccountApi extends Controller
         !$userFound ? $this->middleware->error_handler(404, 'This account does not exist!') : null;
 
         // Check account blocked
-<<<<<<< HEAD
         $userFound['role'] == 'blocked'
-=======
-        $userFound['deleted']
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         ? $this->middleware->error_handler(200, 'Your account has been unactivated, please contact adminstrator for more information.')
         : null;
 
@@ -215,7 +204,6 @@ class AccountApi extends Controller
                     'msg' => 'Your account has been unactivated in 1 minute',
                     'expired' => $_SESSION['a_minute_expire']
                 ));
-<<<<<<< HEAD
             }else if ($wrongPassCount == 6) {
                 $this->model('Account')->UPDATE_ONE(array('phoneNumber' => $_POST['phoneNumber']), array('role' => 'blocked'));
                 $this->middleware->error_handler(200, 'Your account has been unactivated, please contact adminstrator for more information.');
@@ -228,19 +216,6 @@ class AccountApi extends Controller
             
 
             // Send response
-=======
-            }
-
-            // Unactivated account if wrong password many time (>= 6 times)
-            if ($wrongPassCount == 6) {
-                $this->model('Account')->UPDATE_ONE(array('phoneNumber' => $_POST['phoneNumber']), array('deleted' => 1));
-                $this->model('Account')->UPDATE_ONE(array('phoneNumber' => $_POST['phoneNumber']), array('role' => 'blocked'));
-                $this->middleware->error_handler(200, 'Your account has been unactivated, please contact adminstrator for more information.');
-            }
-
-            // Send response
-            $this->middleware->error_handler(401, 'Password is incorrect!');
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         }
 
         // Login successfully
@@ -252,10 +227,7 @@ class AccountApi extends Controller
                 'phoneNumber' => $userFound['phoneNumber'],
                 'fullname' => $userFound['fullname'],
                 'role' => $userFound['role'],
-<<<<<<< HEAD
                 
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
             ), getenv('SECRET_KEY'), 'HS256');
 
             // Update wrong password count to zero
@@ -267,22 +239,15 @@ class AccountApi extends Controller
             setcookie('JWT_TOKEN', $jwt, time() + (86400 * 1), "/"); /* 86400 = 1 day */
             if($_POST['phoneNumber'])
 
-<<<<<<< HEAD
             ($userFound['initialPassword'] !== 'NULL')
             ? $redirect = getenv('BASE_URL') . 'setupPassword'
             : $redirect = getenv('BASE_URL') ;
             
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
             // Send response
             $this->middleware->json_send_response(200, array(
                 'status' => true,
                 'msg' => 'Login successfully, redirecting...',
-<<<<<<< HEAD
                 'redirect' => $redirect,
-=======
-                'redirect' => getenv('BASE_URL'),
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
             ));
         }
     }
@@ -318,7 +283,6 @@ class AccountApi extends Controller
         ));
 
         // Validation files data
-<<<<<<< HEAD
         // $filesDataErr = $this->utils()->validateFiles(($_FILES), array(
         //     'idCard_front' => array(
         //         'required' => true,
@@ -335,24 +299,6 @@ class AccountApi extends Controller
         // Handle error if occur
         $bodyDataErr ? $this->middleware->error_handler(200, $bodyDataErr) : null;
         // $filesDataErr ? $this->middleware->error_handler(200, $filesDataErr) : null;
-=======
-        $filesDataErr = $this->utils()->validateFiles(($_FILES), array(
-            'idCard_front' => array(
-                'required' => true,
-                'image' => true,
-                'size' => 1, /* Maximum size in MB */
-            ),
-            'idCard_back' => array(
-                'required' => true,
-                'image' => true,
-                'size' => 1, /* Maximum size in MB */
-            ),
-        ));
-
-        // Handle error if occur
-        $bodyDataErr ? $this->middleware->error_handler(200, $bodyDataErr) : null;
-        $filesDataErr ? $this->middleware->error_handler(200, $filesDataErr) : null;
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         $emailFound =  $this->model('Account')->SELECT_ONE('email', $_POST['email']);
         $phoneNumberFound =  $this->model('Account')->SELECT_ONE('phoneNumber', $_POST['phoneNumber']);
 
@@ -361,11 +307,7 @@ class AccountApi extends Controller
         $phoneNumberFound ? $this->middleware->error_handler(200, 'This phone number was used by another account!') : null;
 
         // Initial files
-<<<<<<< HEAD
         // $FILES = $this->utils()->handleUpload($_FILES, ['idCard_front', 'idCard_back']);
-=======
-        $FILES = $this->utils()->handleUpload($_FILES, ['idCard_front', 'idCard_back']);
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
 
         // Start to send an email
         $initialPassword = $this->utils()->generateRandomString();
@@ -392,7 +334,6 @@ class AccountApi extends Controller
             'address' => $_POST['address'],
             'birthday' => $_POST['birthday'],
             'initialPassword' => password_hash($initialPassword, PASSWORD_DEFAULT),
-<<<<<<< HEAD
             'createdAt' => time(),
             'updatedAt' => time(),
         ));
@@ -409,15 +350,6 @@ class AccountApi extends Controller
 
         // Return response to endpoint
         // 
-=======
-            'idCard_front' => $FILES['idCard_front']['path'],
-            'idCard_back' => $FILES['idCard_back']['path'],
-            'createdAt' => time(),
-            'updatedAt' => time(),
-        ));
-
-        // Return response to endpoint
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         if ($sendMailStatus && $inserted) {
             $this->middleware->json_send_response(200, array(
                 'status' => true,
@@ -492,10 +424,6 @@ class AccountApi extends Controller
 
     function userProfile($payload){
         $userInfor = $this->model('Account')->SELECT_ONE('email',$payload->email);
-<<<<<<< HEAD
-=======
-        // var_dump($userInfor);
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         try{
             $this->middleware->json_send_response(200, array(
                 'status' => true,
@@ -503,21 +431,14 @@ class AccountApi extends Controller
                 'response' => array(
                     'email' =>  $userInfor['email'],
                     'phoneNumber' => $userInfor['phoneNumber'],
-<<<<<<< HEAD
                     'gender' => $userInfor['gender'],
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                     'fullname' => $userInfor['fullname'],
                     'address' => $userInfor['address'],
                     'birthday' => $userInfor['birthday'],
                     'idCard_back' => $userInfor['idCard_back'],
                     'idCard_front' => $userInfor['idCard_front'],
-<<<<<<< HEAD
                     'wallet' => $userInfor['wallet'],
                     'role' => $userInfor['role']
-=======
-                    'wallet' => $userInfor['wallet']
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 )
             ));
         }catch(Exception $e){
@@ -536,24 +457,17 @@ class AccountApi extends Controller
                 'email' =>  $userDetails['email'],
                 'phoneNumber' => $userDetails['phoneNumber'],
                 'fullname' => $userDetails['fullname'],
-<<<<<<< HEAD
                 'gender' => $userDetails['gender'],
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 'address' => $userDetails['address'],
                 'birthday' => $userDetails['birthday'],
                 'idCard_back' => $userDetails['idCard_back'],
                 'idCard_front' => $userDetails['idCard_front'],
                 'wallet' => $userDetails['wallet']
             )
-<<<<<<< HEAD
         )) :  $this->middleware->json_send_response(200, array(
             'status' => false,
             'msg' => 'user does not exist!',));
            
-=======
-        )) : $this->middleware->error_handler(404,'User not found!');
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
 
     }
 
@@ -584,10 +498,7 @@ class AccountApi extends Controller
             : $this->middleware->json_send_response(200, array(
                 'status' => true,
                 'msg' => 'Update password successfully!',
-<<<<<<< HEAD
                 'redirect' => getenv('BASE_URL')
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
                 )
             );
         }else{
@@ -598,7 +509,6 @@ class AccountApi extends Controller
             );
         }
     }
-<<<<<<< HEAD
 
     function uploadImage($payload){
         
@@ -645,6 +555,4 @@ class AccountApi extends Controller
             ));
         }
     }
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
 }

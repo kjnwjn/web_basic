@@ -8,6 +8,42 @@
     .login-main {
         background-image: linear-gradient(45deg, #222D73 0%, #78ebfc 100%);
     }
+    .extraAction{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+       
+    }
+    .btnHome,.btnRedirect{
+        width: 130px;
+        padding: 5px 1px;
+        border: none;
+        border-radius:5px;
+    }
+    .btnHome{
+        background-color:#222d73;
+         color: #fff;
+    }
+    .btnHome:hover{
+        background-color: #20319f;
+        cursor: pointer;
+        
+    }
+    .btnRedirect{
+        background-color: #67c5e1;
+         color: #fff;
+    }
+    .btnRedirect:hover{
+        background-color: #0dd6f4;
+        cursor: pointer;
+
+    }
+    .home_link{
+        color: #fff;
+        text-decoration: none;
+        padding: 5px 47px;
+    }
 </style>
 <div class="main login-main" style="background-image: linear-gradient(45deg, #222D73 0%, #78ebfc 100%)">
     <form action="" method="POST" class="form" id="register-form">
@@ -63,11 +99,7 @@
             <input id="birthday" name="birthday" placeholder="birthday" type="text" class="form-control" rules="required" />
             <span class="error-message"></span>
         </div> 
-<<<<<<< HEAD
         <!-- <div class="form-group form-validation">
-=======
-        <div class="form-group form-validation">
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
             <label for="idCard_front" class="form-label">ID Card front</label>
             <input id="idCard_front" name="idCard_front" placeholder="idCard_front" type="file" class="form-control" rules="required" multipart/>
             <span class="error-message"></span>
@@ -76,12 +108,12 @@
             <label for="idCard_back" class="form-label">ID Card back</label>
             <input id="idCard_back" name="idCard_back" placeholder="idCard_back" type="file" class="form-control" rules="required" multipart/>
             <span class="error-message"></span>
-<<<<<<< HEAD
         </div> -->
-=======
-        </div>
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         <button type="submit" id="btnSubmit" class="form-submit btn" >Đăng ký</button>
+        <div class="extraAction">
+            <button type="button" id="" class="btnHome"><a href="<?= getenv('BASE_URL')?>" class="home_link" >Home</a></button>
+            <button type="button" id="" class="btnRedirect" ><a href="<?= getenv('BASE_URL')?>login" class="home_link" >Login</a><</button>
+        </div>
     </form>
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

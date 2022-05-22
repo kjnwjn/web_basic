@@ -1,11 +1,15 @@
 <?php
-
-session_start();
-require_once('./private/core/DevCode.php');
-require_once('./private/Bridge.php');
+require __DIR__ . '/vendor/autoload.php';
+require './private/bridge.php';
 
 use DevCoder\DotEnv;
 
-(new DotEnv(__DIR__ . '/.env'))->load();
+try {
+    (new DotEnv( './.env'))->load();
+} catch(Exception){
+
+}
+
+session_start();
 
 $myApp = new App();

@@ -41,10 +41,7 @@ class PhoneCard extends DB
     }
     function INSERT($field = [])
     {
-<<<<<<< HEAD
         
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         $key_field = [];
         $value_field = [];
 
@@ -57,7 +54,6 @@ class PhoneCard extends DB
         $field_name = implode(',', $key_field);
 
         try {
-<<<<<<< HEAD
            
             $sql = 'INSERT INTO phonecard (' . $field_name . ') VALUES (?,?,?,?,?,?,?)';
             $stmt = $this->conn->prepare($sql);
@@ -72,17 +68,6 @@ class PhoneCard extends DB
             return true;
         } catch (Exception $e) {
             echo $e;
-=======
-            $sql = 'INSERT INTO phoneCard (' . $field_name . ') VALUES (' . $value . ')';
-            $stmt = $this->conn->prepare($sql);
-            if(!$stmt){
-                echo "Prepare failed: (". $this->conn->error.") ".$this->conn->error."<br>";
-             }
-            $stmt->execute();
-            return true;
-        } catch (Exception $e) {
-            return false;
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         }
     }
 
@@ -95,7 +80,6 @@ class PhoneCard extends DB
             $conditionValue = $conditions[$conditionName];
             $toUpdateName = array_keys($toUpdate)[0];
             $newValue = $toUpdate[$toUpdateName];
-<<<<<<< HEAD
             $sql = 'UPDATE phonecard SET ' . $toUpdateName . ' = ? WHERE ' . $conditionName . ' = ?';
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param('ss',$newValue,$conditionValue);
@@ -108,20 +92,6 @@ class PhoneCard extends DB
             return true;
         } catch (Exception $e) {
             return $e;
-=======
-            $sql = 'UPDATE phoneCard SET ' . $toUpdateName . ' = "' . $newValue . '" WHERE ' . $conditionName . ' = "' . $conditionValue . '"';
-            $stmt = $this->conn->prepare($sql);
-            if(!$stmt){
-                echo "Prepare failed: (". $this->conn->error.") ".$this->conn->error."<br>";
-             }
-            $stmt->execute();
-            $sql = 'UPDATE phoneCard SET updatedAt = ' . time() . ' WHERE ' . $conditionName . ' = "' . $conditionValue . '"';
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute();
-            return true;
-        } catch (Exception $e) {
-            return false;
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         }
     }
     

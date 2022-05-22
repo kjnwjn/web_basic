@@ -16,7 +16,6 @@ class Transaction extends DB
         $result = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
         return $result ? $result : array();
     }
-<<<<<<< HEAD
     function SELECT_ORDER_BY_DESC($condition = '', $conditionValue = '',$fieldValue = '')
     {
         $sql = 'SELECT * from `transaction` WHERE '. $condition . ' = "' . $conditionValue . '" ORDER BY `'.$fieldValue . '` DESC';
@@ -25,8 +24,6 @@ class Transaction extends DB
         return $result ? $result : array();
     }
    
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
     function SELECT_INNER_JOIN($column = [],$table = '',$condition ='')
     {
         $value_field = [];
@@ -47,11 +44,7 @@ class Transaction extends DB
     {
         $sql = 'SELECT * from `transaction`';
         $stmt = $this->conn->query($sql);
-<<<<<<< HEAD
         $result = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
-=======
-        $result = mysqli_fetch_array($stmt, MYSQLI_ASSOC);
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         return $result ? $result : array();
     }
     function INSERT($field = [])
@@ -68,7 +61,6 @@ class Transaction extends DB
         $field_name = implode(',', $key_field);
 
         try {
-<<<<<<< HEAD
             if($field['type_transaction'] == '1'){
                 $sql = 'INSERT INTO transaction (' . $field_name . ') VALUES (?,?,?,?,?,?,?,?)';
                 $stmt = $this->conn->prepare($sql);
@@ -101,17 +93,6 @@ class Transaction extends DB
             return true;
         } catch (Exception $e) {
             return  false;
-=======
-            $sql = 'INSERT INTO transaction (' . $field_name . ') VALUES (' . $value . ')';
-            $stmt = $this->conn->prepare($sql);
-            if(!$stmt){
-                echo "Prepare failed: (". $this->conn->error.") ".$this->conn->error."<br>";
-             }
-            $stmt->execute();
-            return true;
-        } catch (Exception $e) {
-            return false;
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         }
     }
 
@@ -124,7 +105,6 @@ class Transaction extends DB
             $conditionValue = $conditions[$conditionName];
             $toUpdateName = array_keys($toUpdate)[0];
             $newValue = $toUpdate[$toUpdateName];
-<<<<<<< HEAD
             $sql = 'UPDATE transaction SET ' . $toUpdateName . ' = ? WHERE ' . $conditionName . ' = ?';
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param('ss',$newValue,$conditionValue);
@@ -137,20 +117,6 @@ class Transaction extends DB
             return true;
         } catch (Exception $e) {
             return $e;
-=======
-            $sql = 'UPDATE transaction SET ' . $toUpdateName . ' = "' . $newValue . '" WHERE ' . $conditionName . ' = "' . $conditionValue . '"';
-            $stmt = $this->conn->prepare($sql);
-            if(!$stmt){
-                echo "Prepare failed: (". $this->conn->error.") ".$this->conn->error."<br>";
-             }
-            $stmt->execute();
-            $sql = 'UPDATE transaction SET updatedAt = ' . time() . ' WHERE ' . $conditionName . ' = "' . $conditionValue . '"';
-            $stmt = $this->conn->prepare($sql);
-            $stmt->execute();
-            return true;
-        } catch (Exception $e) {
-            return false;
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         }
     }
     

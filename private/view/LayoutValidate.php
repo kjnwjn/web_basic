@@ -6,10 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= getenv('BASE_URL') ?>style.css">
-<<<<<<< HEAD
     <link rel="icon" type="image/png" href="../../public/assest/img/icon.png">
-=======
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
     <title><?= isset($data['title']) ? $data['title'] : 'Document' ?></title>
 </head>
 

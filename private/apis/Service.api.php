@@ -1,7 +1,7 @@
 <?php
 
 require_once('./private/core/Controller.php');
-require_once('./private/core/jwt/vendor/autoload.php');
+require_once('./vendor/autoload.php');
 require_once('./private/middlewares/Api.middleware.php');
 
 use Firebase\JWT\JWT;
@@ -197,6 +197,7 @@ class ServiceApi extends Controller
             ',
         ));
         $time_expire = time() + 60;
+
         $_SESSION['transactionPrepare'] = array(
             'transaction_id' => $transaction_id,
             'email' => $email,

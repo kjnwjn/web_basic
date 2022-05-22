@@ -1,5 +1,5 @@
 <?php
-require_once('./private/core/jwt/vendor/autoload.php');
+require_once('./vendor/autoload.php');
 require_once('./private/middlewares/Api.middleware.php');
 class Register extends Controller
 {
@@ -7,13 +7,8 @@ class Register extends Controller
     {
         $this->middleware = new ApiMiddleware();
         $payload = $this->middleware->jwt_get_payload();
-        if($payload) {   
-            $this->view('Layout', array(
-            'title' => '404 Not Found',
-            'page' => '404'
-            ));
-            die();
-        };
+        $payload ? header('Location: '.getenv('BASE_URL').'') : null;
+
     }
     function default()
     {

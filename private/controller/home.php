@@ -1,6 +1,5 @@
 <?php
-<<<<<<< HEAD
-require_once('./private/core/jwt/vendor/autoload.php');
+require_once('./vendor/autoload.php');
 require_once('./private/middlewares/Api.middleware.php');
 
 use Firebase\JWT\JWT;
@@ -24,13 +23,6 @@ class Home extends Controller
             ));
             die();
         };
-=======
-
-class Home extends Controller
-{
-    function default()
-    {
->>>>>>> d7fc51a10643a9560bcb280b4add131580ba1a22
         $this->view('Layout', array(
             'title' => 'Home',
             'page' => 'home'
