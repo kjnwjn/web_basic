@@ -255,7 +255,7 @@ class AdminApi extends Controller
                     <p>Thank you for your registering on our application! 
                     This is an email to notice you that you need to additional </p>
                     <p><strong>' . $_POST['content'] . '</strong></p>into your profile </p>
-                    <p>Go to profile and select update profile or <a href="' . getenv('BASE_URL') . 'userprofile/profile">click here</a></p>
+                    <p>Go to profile and select update profile or <a href="' . getenv('BASE_URL') . 'profile">click here</a></p>
 
                 </body>'
         ));

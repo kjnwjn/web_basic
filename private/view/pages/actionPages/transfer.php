@@ -18,9 +18,10 @@
 						<tr>
 							<td>How much ?</td>
 							<td>
-								<input id="money" name="money" type="number" min=0 placeholder="5000000" required />
+								<input id="money" name="money" type="number" min=0 placeholder="5000000" required onChange="checkMoney()"/>
 							</td>
 						</tr>
+						<tr class="error-message text-danger"></tr>
 
 						<tr>
 							<td>Cost Bearder</td>
@@ -77,6 +78,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="/main.js"> </script>
 <script>
+
+function checkMoney(){
+		if($('#money').val() < 0){
+			$('.error-message').html(`<td ></td><td >Invalid money value</td>`)
+			$('.btn-success').attr("disabled", true);
+		}else{
+			$('.error-message').html('')
+			$(":submit").removeAttr("disabled");
+		}
+	}
 	const form = $('#form')
 	const url = 'http://localhost/api/service/transfer'
 	const urlUserDetails = 'http://localhost/api/account/user-details/'

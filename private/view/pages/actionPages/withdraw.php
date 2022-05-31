@@ -31,9 +31,13 @@
 						<tr>
 							<td>Money</td>
 							<td>
-								<input id="money" name="money" type="number" min=0 placeholder="500000" required />
+								<input id="money" name="money" type="number" min=0 placeholder="500000" required onChange="checkMoney()"/>
 							</td>
 						</tr>
+						<tr class="error-message text-danger">
+						
+						</tr>
+
 						<tr>
 							<td>CVV</td>
 							<td>
@@ -81,6 +85,16 @@
 	const urlUserProfile = 'http://localhost/api/account/profile/'
 
 
+	function checkMoney(){
+		if($('#money').val() < 0){
+			$('.error-message').html(`<td ></td><td >Invalid money value</td>`)
+			$('.btn-success').attr("disabled", true);
+		}else{
+			$('.error-message').html('')
+			$(":submit").removeAttr("disabled");
+		}
+	}
+	
 	function renderData(url = '') {
 		fetch(url)
 			.then(response => response.json())

@@ -31,10 +31,10 @@
 						<tr>
 							<td>Money</td>
 							<td>
-								<input id="money" name="money" type="number" min=0  placeholder="500000" required/>
+								<input id="money" name="money" type="number" min=0  placeholder="500000" required onChange="checkMoney()"/>
 							</td>
 						</tr>
-
+						<tr class="error-message text-danger"></tr>
 
 
 					</table>
@@ -69,6 +69,17 @@
 <script src="/main.js"> </script>
 
 <script>
+	
+	function checkMoney(){
+		if($('#money').val() < 0){
+			$('.error-message').html(`<td ></td><td >Invalid money value</td>`)
+			$('.btn-success').attr("disabled", true);
+		}else{
+			$('.error-message').html('')
+			$(":submit").removeAttr("disabled");
+		}
+	}
+	
 	const form = $('#form')
 	const url = 'http://localhost/api/service/recharge'
 	const urlUserProfile = 'http://localhost/api/account/profile/'
